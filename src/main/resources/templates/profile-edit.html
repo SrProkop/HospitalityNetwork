@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактирование статьи</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5">
+    <h1>Редактирование статьи</h1>
+    <div th:each="el : ${user}">
+        <form method="post">
+            <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
+            <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
+            <input type="text" th:value="${el.password}" name="password" placeholder="Введите пароль" class="form-control"><br>
+            <form th:action="'/profile/edit/complete'" method="post">
+                <button class="btn btn-warning" type="submit">Обновить</button>
+            </form>
+        </form>
+    </div>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+</body>
+</html>

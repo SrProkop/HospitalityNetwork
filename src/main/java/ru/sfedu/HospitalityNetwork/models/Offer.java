@@ -104,4 +104,8 @@ public class Offer {
         return author.getUsername();
     }
 
+    public Long getAuthorId() {
+        return author.getId();
+    }
+
 }
