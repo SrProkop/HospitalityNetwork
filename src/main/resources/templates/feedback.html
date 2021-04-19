@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" style="height: 100%">
+<head>
+    <title th:text="${title}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="display:flex; flex-direction:column; height: 100%">
+<header th:insert="blocks/header :: header"></header>
+<div class="container mt-5" style="flex-grow:1; display: flex; justify-content: center">
+    <script src="https://yastatic.net/s3/frontend/forms/_/embed.js"></script>
+    <iframe src="https://forms.yandex.ru/u/6053805da8ad9e02c01bf3ba/?iframe=1" frameborder="0" name="ya-form-6053805da8ad9e02c01bf3ba" width="650"></iframe>
+</div>
+<div th:insert="blocks/footer :: footer"></div>
+</body>
+</html>

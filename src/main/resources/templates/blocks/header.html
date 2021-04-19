@@ -1,0 +1,18 @@
+<div th:fragment="header">
+    <header class="p-3 pr-10 px-md-4 mb-3 bg-body border-bottom shadow-sm" style="justify-content: space-between; display: flex" >
+        <div class="d-flex flex-column flex-md-row align-items-center">
+            <p class="h5 my-0 me-md-auto fw-normal">HospNet</p>
+            <nav class="my-2 my-md-0 me-md-3">
+                <a class="p-2 text-dark" href="/">Главная</a>
+                <a class="p-2 text-dark" href="/hosts-offer">Предложения хостов</a>
+                <a class="p-2 text-dark" href="/guests-offer">Предложения гостей</a>
+                <a class="p-2 text-dark" href="/my-offers">Мои предложения</a>
+                <a class="p-2 text-dark" href="/profile">Профиль</a>
+                <a class="p-2 text-dark" href="/feedback">Обратная связь</a>
+            </nav>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Выход"/>
+        </form>
+    </header>
+</div>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+
+<body style="display: flex; height: 100%; flex-direction: column">
+<header th:insert="blocks/header :: header"></header>
+
+<style>
+    .content {
+        width:100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 200px 0
+    }
+    .content h4 {
+        display: block;
+        max-width: 200px;
+        font-size: 22px;
+    }
+    .field {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+    }
+    .field label {
+        padding-right: 8px;
+        line-height: 20px;
+    }
+    .field input {
+        border-radius: 6px;
+        padding: 3px;
+    }
+    .btn1 {
+        padding: 3px; border-radius: 8px; width: 40%; align-self: center;
+    }
+</style>
+
+<div class="content" >
+    <h4>Регистрация</h4><br>
+    <form th:action="@{/registration}" method="post" style="display: flex; flex-direction: column; gap: 20px; align-content: center" >
+        <div class="field">
+            <label for="username"> Имя пользователя: </label>
+            <input type="text" id="username" name="username"/>
+        </div>
+        <div class="field">
+            <label for="password"> Пароль: </label>
+            <input type="password" id="password" name="password"/>
+        </div>
+        <input class="btn1" type="submit" value="Вход"/>
+    </form>
+</div>
+
+
+<div th:insert="blocks/footer :: footer"></div>
+</body>
+</html>

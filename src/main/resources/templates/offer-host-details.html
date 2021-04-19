@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Статья</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div class="container mt-5">
+    <div th:each="el : ${offerHost}" class="alert alert-info mt-2">
+        <h3 th:text="${el.getAuthorName}" style="text-align:center"></h3>
+        <h3 th:text="${el.country}" style="text-align:center"></h3>
+        <h3 th:text="${el.city}" style="text-align:center"></h3>
+        <pre th:text="${el.aboutOffer}" style="background-blend-mode: overlay; white-space: break-spaces;"></pre>
+    </div>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+</body>
+</html>

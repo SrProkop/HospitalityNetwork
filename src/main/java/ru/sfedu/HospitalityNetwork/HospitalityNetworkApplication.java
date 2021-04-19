@@ -1,4 +1,4 @@
-package rusfedu.HospitalityNetwork;
+package ru.sfedu.HospitalityNetwork;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
