@@ -14,6 +14,10 @@
         <h3 th:text="${el.country}" style="text-align:center"></h3>
         <h3 th:text="${el.city}" style="text-align:center"></h3>
         <pre th:text="${el.aboutOffer}" style="background-blend-mode: overlay; white-space: break-spaces;"></pre>
+        <a th:href="'/hosts-offer/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
+        <form th:action="'/hosts-offer/' + ${el.id} + '/remove'" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
+        </form>
     </div>
 </div>
 

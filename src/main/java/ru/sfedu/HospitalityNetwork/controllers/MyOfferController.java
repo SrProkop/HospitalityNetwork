@@ -49,7 +49,16 @@ public class MyOfferController {
     }
 
     @GetMapping("/offer-guest-add")
-    public String offerGuestAdd(Model model) {
+    public String offerGuestAdd(
+            @AuthenticationPrincipal User user,
+            Model model) {
+        Iterable<OfferGuest> offerGuests = offerGuestRepo.findAll();
+        List<OfferGuest> listOfferGuest = new ArrayList<>();
+        for (OfferGuest offerGuest : offerGuests) {
+            if (offerGuest.getAuthor().getId() == user.getId()) {
+                return "redirect:/my-offers";
+            }
+        }
         return "offer-guest-add";
     }
 
@@ -81,7 +90,16 @@ public class MyOfferController {
     }
 
     @GetMapping("/offer-host-add")
-    public String offerHostAdd(Model model) {
+    public String offerHostAdd(
+            @AuthenticationPrincipal User user,
+            Model model) {
+        Iterable<OfferHost> offerHosts = offerHostRepo.findAll();
+        List<OfferHost> listOfferHost = new ArrayList<>();
+        for (OfferHost offerHost : offerHosts) {
+            if (offerHost.getAuthor().getId() == user.getId()) {
+                return "redirect:/my-offers";
+            }
+        }
         return "offer-host-add";
     }
 

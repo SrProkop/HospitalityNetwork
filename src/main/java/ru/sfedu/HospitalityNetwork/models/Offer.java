@@ -19,10 +19,6 @@ public class Offer {
 
     private int views;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User author;
-
     private boolean typeOffer;
 
     public Offer(String name, String aboutOffer, String country, String city, User author) {
@@ -30,7 +26,6 @@ public class Offer {
         this.aboutOffer = aboutOffer;
         this.country = country;
         this.city = city;
-        this.author = author;
     }
 
     public Offer() {
@@ -84,14 +79,6 @@ public class Offer {
         this.typeOffer = typeOffer;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
     public int getViews() {
         return views;
     }
@@ -100,12 +87,5 @@ public class Offer {
         this.views = views;
     }
 
-    public String getAuthorName() {
-        return author.getUsername();
-    }
-
-    public Long getAuthorId() {
-        return author.getId();
-    }
 
 }
