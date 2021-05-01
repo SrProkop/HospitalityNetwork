@@ -7,13 +7,15 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<a class="p-2 text-dark" href="/profile/edit">Редактировать профиль</a>
 <div class="container mt-5">
     <div th:each="el : ${user}" class="alert alert-info mt-2">
-        <h3 th:text="${el.id}" style="text-align:center"></h3>
-        <h3 th:text="${el.username}" style="text-align:center"></h3>
-        <h3 th:text="${el.password}" style="text-align:center"></h3>
-        <h3 th:text="${el.active}" style="text-align:center"></h3>
+        <img th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
+        <h3 th:text="'Имя пользователя: ' + ${el.fullName}" style="text-align"></h3><br>
+        <h3 th:text="'Страна: ' + ${el.country}" style="text-align"></h3><br>
+        <h3 th:text="'Город: ' + ${el.city}" style="text-align"></h3><br>
+        <h3 th:text="'Адрес электронной почты: ' + ${el.emailAddress}" style="text-align"></h3><br>
+        <h3 th:text="'Информация о пользователе: ' + ${el.aboutUser}" style="text-align"></h3><br>
+        <a href="/profile/edit" class="btn btn-warning">Редактировать профиль</a>
     </div>
 </div>
 

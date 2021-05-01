@@ -9,10 +9,10 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5">
     <div th:each="el : ${offerHost}" class="alert alert-info mt-2">
-        <a th:text="${el.getAuthorName}" th:href="'/user/id' + ${el.getAuthorId}" class="p-2" ></a>
-        <h3 th:text="${el.getAuthorName}" style="text-align:center"></h3>
-        <h3 th:text="${el.country}" style="text-align:center"></h3>
-        <h3 th:text="${el.city}" style="text-align:center"></h3>
+        <a th:text="${el.getAuthorName}" th:href="'/user/id' + ${el.getAuthorId}" class="p-2" style="font-size: x-large;"></a>
+        <h3 th:text="'Страна: ' + ${el.country}" style="text-align"></h3>
+        <h3 th:text="'Город: ' + ${el.city}" style="text-align"></h3>
+        <pre th:text="'Описание предложения: ' + ${el.aboutOffer}" style="background-blend-mode: overlay; white-space: break-spaces;"></pre>
         <pre th:text="${el.aboutOffer}" style="background-blend-mode: overlay; white-space: break-spaces;"></pre>
     </div>
 </div>

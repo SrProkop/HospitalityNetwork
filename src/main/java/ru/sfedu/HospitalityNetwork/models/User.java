@@ -17,8 +17,13 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean active;
-    private String country;
-    private String city;
+
+    private String emailAddress = "";
+    private String aboutUser = "";
+    private String fullName = "";
+    private String country = "";
+    private String city = "";
+    private String avatar = "def.jpg";
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -79,6 +84,38 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getAboutUser() {
+        return aboutUser;
+    }
+
+    public void setAboutUser(String aboutUser) {
+        this.aboutUser = aboutUser;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

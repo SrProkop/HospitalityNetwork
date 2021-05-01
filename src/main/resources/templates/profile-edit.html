@@ -11,10 +11,14 @@
 <div class="container mt-5 mb-5">
     <h1>Редактирование статьи</h1>
     <div th:each="el : ${user}">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
+            <img th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
+            <input type="file" name="file"><br>
+            <input type="text" th:value="${el.fullName}" name="fullName" placeholder="Введите ваше ФИО" class="form-control"><br>
             <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
             <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
-            <input type="text" th:value="${el.password}" name="password" placeholder="Введите пароль" class="form-control"><br>
+            <input type="text" th:value="${el.emailAddress}" name="emailAddress" placeholder="Введите электронную почту" class="form-control"><br>
+            <input type="text" th:value="${el.aboutUser}" name="aboutUser" placeholder="Введите информацию о пользователе" class="form-control"><br>
             <form th:action="'/profile/edit/complete'" method="post">
                 <button class="btn btn-warning" type="submit">Обновить</button>
             </form>

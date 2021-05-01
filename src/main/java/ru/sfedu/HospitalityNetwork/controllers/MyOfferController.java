@@ -37,6 +37,9 @@ public class MyOfferController {
             }
         }
         model.addAttribute("offerHosts", listOfferHost);
+        if (listOfferHost.size() == 0) {
+            model.addAttribute("addOfferHost", "Добавить предложение хоста");
+        }
         Iterable<OfferGuest> offerGuests = offerGuestRepo.findAll();
         List<OfferGuest> listOfferGuest = new ArrayList<>();
         for (OfferGuest offerGuest : offerGuests) {
@@ -45,6 +48,9 @@ public class MyOfferController {
             }
         }
         model.addAttribute("offerGuests", listOfferGuest);
+        if (listOfferGuest.size() == 0) {
+            model.addAttribute("addOfferGuest", "Добавить запрос гостя");
+        }
         return "my-offers";
     }
 

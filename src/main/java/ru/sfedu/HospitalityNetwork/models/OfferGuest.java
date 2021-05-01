@@ -53,7 +53,7 @@ public class OfferGuest extends Offer{
     }
 
     public String getAuthorName() {
-        return author.getUsername();
+        return author.getFullName();
     }
 
     public Long getAuthorId() {
