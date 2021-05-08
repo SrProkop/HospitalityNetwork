@@ -8,13 +8,15 @@ import javax.persistence.ManyToOne;
 @Entity(name = "OfferHost")
 public class OfferHost extends Offer{
 
-    public OfferHost(String name, String country, String city, String aboutOffer, User author) {
+    public OfferHost(String name, String country, String city, String aboutOffer, User author, String addressHouse, String aboutHouse) {
         this.setName(name);
         this.setCountry(country);
         this.setCity(city);
         this.setAboutOffer(aboutOffer);
         this.setTypeOffer(true);
         this.setAuthor(author);
+        this.setAddressHouse(addressHouse);
+        this.setAboutHouse(aboutHouse);
     }
 
     public OfferHost() {
@@ -27,6 +29,7 @@ public class OfferHost extends Offer{
 
     private boolean personalMeeting;
     private String addressHouse;
+    private String aboutHouse;
 
     public User getAuthor() {
         return author;
@@ -50,6 +53,14 @@ public class OfferHost extends Offer{
 
     public void setAddressHouse(String addressHouse) {
         this.addressHouse = addressHouse;
+    }
+
+    public String getAboutHouse() {
+        return aboutHouse;
+    }
+
+    public void setAboutHouse(String aboutHouse) {
+        this.aboutHouse = aboutHouse;
     }
 
     public String getAuthorName() {

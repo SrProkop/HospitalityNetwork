@@ -19,6 +19,25 @@
     </div>
 </div>
 
+<div class="container mt-5" style="flex-grow:1">
+    <h1>Комментарии к пользователю</h1>
+    <div th:each="war : ${warning}" class="alert alert-info mt-2">
+        <p th:text="${war}"/>
+    </div>
+    <div th:each="com : ${comment}" class="alert alert-info mt-2">
+        <h3 th:text="'Автор: ' + ${com.getAuthorName}"></h3>
+        <h3 th:text="'комментарий: ' + ${com.note}"></h3>
+    </div>
+    <div>
+        <form method="post">
+            <input type="text" name="note" placeholder="Оставьте ваш комментарий" class="form-control"><br>
+            <form th:action="'/user/id' + ${user.id} + '/addComment'" method="post">
+                <button class="btn btn-warning" type="submit">Добавить</button>
+            </form>
+        </form>
+    </div>
+</div>
+
 <div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

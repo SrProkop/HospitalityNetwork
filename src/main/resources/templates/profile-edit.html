@@ -18,7 +18,7 @@
             <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
             <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
             <input type="text" th:value="${el.emailAddress}" name="emailAddress" placeholder="Введите электронную почту" class="form-control"><br>
-            <input type="text" th:value="${el.aboutUser}" name="aboutUser" placeholder="Введите информацию о пользователе" class="form-control"><br>
+            <textarea name="aboutUser" placeholder="Введите информацию о пользователе" class="form-control" th:text="${el.aboutUser}" style="height:100px" /><br>
             <form th:action="'/profile/edit/complete'" method="post">
                 <button class="btn btn-warning" type="submit">Обновить</button>
             </form>

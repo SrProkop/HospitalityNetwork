@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.sfedu.HospitalityNetwork.models.OfferGuest;
+import ru.sfedu.HospitalityNetwork.models.Comment;
 import ru.sfedu.HospitalityNetwork.models.User;
+import ru.sfedu.HospitalityNetwork.repo.CommentRepo;
 import ru.sfedu.HospitalityNetwork.repo.UserRepo;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.channels.MulticastChannel;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +27,8 @@ public class ProfileController {
 
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    CommentRepo commentRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -37,6 +40,18 @@ public class ProfileController {
         Optional<User> optionalUser = userRepo.findById(user.getId());
         User profileUser = optionalUser.get();
         model.addAttribute("user", profileUser);
+        Iterable<Comment> comments = commentRepo.findAll();
+        List<Comment> listComment = new ArrayList<>();
+        for (Comment comment : comments) {
+            if (comment.getUserTo().getId() == user.getId()) {
+                listComment.add(comment);
+            }
+        }
+        if (listComment.size() > 0) {
+            model.addAttribute("comment", listComment);
+        } else {
+            model.addAttribute("warning", "У данного пользователя ещё нет отзывов!");
+        }
         return "profile";
     }
 
@@ -65,13 +80,14 @@ public class ProfileController {
         myAccount.setCity(city);
         myAccount.setEmailAddress(emailAddress);
         myAccount.setAboutUser(aboutUser);
+        if (!file.isEmpty()) {
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
 
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFilename = uuidFile + "." + file.getOriginalFilename();
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-        file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-        myAccount.setAvatar(resultFilename);
+            myAccount.setAvatar(resultFilename);
+        }
 
         userRepo.save(myAccount);
         return "redirect:/profile";
@@ -85,13 +101,22 @@ public class ProfileController {
             @RequestParam String city,
             @RequestParam String emailAddress,
             @RequestParam String aboutUser,
-            Model model) {
+            Model model,
+            @RequestParam("file") MultipartFile file) throws IOException {
         User myAccount = userRepo.findById(user.getId()).orElseThrow();
         myAccount.setFullName(fullName);
         myAccount.setCountry(country);
         myAccount.setCity(city);
         myAccount.setEmailAddress(emailAddress);
         myAccount.setAboutUser(aboutUser);
+        if (!file.isEmpty()) {
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            myAccount.setAvatar(resultFilename);
+        }
         userRepo.save(myAccount);
         return "redirect:/profile";
     }

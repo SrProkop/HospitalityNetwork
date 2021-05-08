@@ -8,13 +8,15 @@ import javax.persistence.ManyToOne;
 @Entity(name = "OfferGuest")
 public class OfferGuest extends Offer{
 
-    public OfferGuest(String name, String country, String city, String aboutOffer, User author) {
+    public OfferGuest(String name, String country, String city, String aboutOffer, User author, String causeVisit, String aboutBaggage) {
         this.setName(name);
         this.setCountry(country);
         this.setCity(city);
         this.setAboutOffer(aboutOffer);
         this.setTypeOffer(true);
         this.setAuthor(author);
+        this.setCauseVisit(causeVisit);
+        this.setAboutBaggage(aboutBaggage);
     }
 
     public OfferGuest() {
@@ -25,8 +27,9 @@ public class OfferGuest extends Offer{
     @JoinColumn(name = "user_id")
     private User author;
 
+    private String causeVisit;
     private int numberDay;
-    private int weightBaggage;
+    private String aboutBaggage;
 
     public User getAuthor() {
         return author;
@@ -44,12 +47,20 @@ public class OfferGuest extends Offer{
         this.numberDay = numberDay;
     }
 
-    public int getWeightBaggage() {
-        return weightBaggage;
+    public String getAboutBaggage() {
+        return aboutBaggage;
     }
 
-    public void setWeightBaggage(int weightBaggage) {
-        this.weightBaggage = weightBaggage;
+    public void setAboutBaggage(String aboutBaggage) {
+        this.aboutBaggage = aboutBaggage;
+    }
+
+    public String getCauseVisit() {
+        return causeVisit;
+    }
+
+    public void setCauseVisit(String causeVisit) {
+        this.causeVisit = causeVisit;
     }
 
     public String getAuthorName() {

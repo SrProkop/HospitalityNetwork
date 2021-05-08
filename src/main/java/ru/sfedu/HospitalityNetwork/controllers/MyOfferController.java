@@ -75,8 +75,10 @@ public class MyOfferController {
             @RequestParam String country,
             @RequestParam String city,
             @RequestParam String aboutOffer,
+            @RequestParam String causeVisit,
+            @RequestParam String aboutBaggage,
             Model model) {
-        OfferGuest post = new OfferGuest(name, country, city, aboutOffer, user);
+        OfferGuest post = new OfferGuest(name, country, city, aboutOffer, user, causeVisit, aboutBaggage);
         offerGuestRepo.save(post);
         return "redirect:/guests-offer";
     }
@@ -88,9 +90,11 @@ public class MyOfferController {
             @RequestParam String country,
             @RequestParam String city,
             @RequestParam String aboutOffer,
+            @RequestParam String causeVisit,
+            @RequestParam String aboutBaggage,
             @PathVariable(value = "id") long id,
             Model model) {
-        OfferGuest post = new OfferGuest(name, country, city, aboutOffer, user);
+        OfferGuest post = new OfferGuest(name, country, city, aboutOffer, user, causeVisit, aboutBaggage);
         offerGuestRepo.save(post);
         return "redirect:/my-offers";
     }
@@ -116,8 +120,10 @@ public class MyOfferController {
             @RequestParam String country,
             @RequestParam String city,
             @RequestParam String aboutOffer,
+            @RequestParam String addressHouse,
+            @RequestParam String aboutHouse,
             Model model) {
-        OfferHost post = new OfferHost(name, country, city, aboutOffer, user);
+        OfferHost post = new OfferHost(name, country, city, aboutOffer, user, addressHouse, aboutHouse);
         offerHostRepo.save(post);
         return "redirect:/hosts-offer";
     }
@@ -128,10 +134,12 @@ public class MyOfferController {
             @RequestParam String name,
             @RequestParam String country,
             @RequestParam String city,
+            @RequestParam String addressHouse,
+            @RequestParam String aboutHouse,
             @RequestParam String aboutOffer,
             @PathVariable(value = "id") long id,
             Model model) {
-        OfferHost post = new OfferHost(name, country, city, aboutOffer, user);
+        OfferHost post = new OfferHost(name, country, city, aboutOffer, user, addressHouse, aboutHouse);
         offerHostRepo.save(post);
         return "redirect:/my-offers";
     }

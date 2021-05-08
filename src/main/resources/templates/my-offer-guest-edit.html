@@ -15,7 +15,9 @@
             <input type="text" th:value="${el.name}" name="name" placeholder="Введите название предложения" class="form-control"><br>
             <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
             <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
-            <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" th:text="${el.aboutOffer}" style="height:250px" /><br>
+            <input type="text" th:value="${el.causeVisit}" name="causeVisit" placeholder="Введите причину приезда" class="form-control"><br>
+            <input type="text" th:value="${el.aboutBaggage}" name="aboutBaggage" placeholder="Введите информацию о багаже" class="form-control"><br>
+            <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" th:text="${el.aboutOffer}" style="height:70px" /><br>
             <form th:action="'/guests-offer/' + ${el.id} + '/edit/complete'" method="post">
                 <button class="btn btn-warning" type="submit">Обновить</button>
             </form>

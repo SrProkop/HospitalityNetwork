@@ -66,6 +66,8 @@ public class OfferGuestController {
             @RequestParam String aboutOffer,
             @RequestParam String country,
             @RequestParam String city,
+            @RequestParam String causeVisit,
+            @RequestParam String aboutBaggage,
             @PathVariable(value = "id") long id,
             Model model) {
         OfferGuest offerGuest = offerGuestRepo.findById(id).orElseThrow();
@@ -73,6 +75,8 @@ public class OfferGuestController {
         offerGuest.setAboutOffer(aboutOffer);
         offerGuest.setCountry(country);
         offerGuest.setCity(city);
+        offerGuest.setCauseVisit(causeVisit);
+        offerGuest.setAboutBaggage(aboutBaggage);
         offerGuestRepo.save(offerGuest);
         return "redirect:/guests-offer";
     }
@@ -83,6 +87,8 @@ public class OfferGuestController {
             @RequestParam String aboutOffer,
             @RequestParam String country,
             @RequestParam String city,
+            @RequestParam String causeVisit,
+            @RequestParam String aboutBaggage,
             @PathVariable(value = "id") long id,
             Model model) {
         OfferGuest offerGuest = offerGuestRepo.findById(id).orElseThrow();
@@ -90,6 +96,8 @@ public class OfferGuestController {
         offerGuest.setAboutOffer(aboutOffer);
         offerGuest.setCountry(country);
         offerGuest.setCity(city);
+        offerGuest.setCauseVisit(causeVisit);
+        offerGuest.setAboutBaggage(aboutBaggage);
         offerGuestRepo.save(offerGuest);
         return "redirect:/guests-offer";
     }

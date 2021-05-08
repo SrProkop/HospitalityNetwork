@@ -28,6 +28,13 @@ public class OfferHostController {
         return "hosts-offer";
     }
 
+    @GetMapping("/hosts-offer/more")
+    public String allOfferHostMore(Model model) {
+        Iterable<OfferHost> offerHosts = offerHostRepo.findAll();
+        model.addAttribute("offerHosts", offerHosts);
+        return "hosts-offer";
+    }
+
     @GetMapping("/hosts-offer/{id}")
     public String offerHostDetails(
             @AuthenticationPrincipal User user,
@@ -66,6 +73,8 @@ public class OfferHostController {
             @RequestParam String aboutOffer,
             @RequestParam String country,
             @RequestParam String city,
+            @RequestParam String addressHouse,
+            @RequestParam String aboutHouse,
             @PathVariable(value = "id") long id,
             Model model) {
         OfferHost offerHost = offerHostRepo.findById(id).orElseThrow();
@@ -73,6 +82,8 @@ public class OfferHostController {
         offerHost.setAboutOffer(aboutOffer);
         offerHost.setCountry(country);
         offerHost.setCity(city);
+        offerHost.setAddressHouse(addressHouse);
+        offerHost.setAboutHouse(aboutHouse);
         offerHostRepo.save(offerHost);
         return "redirect:/hosts-offer";
     }
@@ -83,6 +94,8 @@ public class OfferHostController {
             @RequestParam String aboutOffer,
             @RequestParam String country,
             @RequestParam String city,
+            @RequestParam String addressHouse,
+            @RequestParam String aboutHouse,
             @PathVariable(value = "id") long id,
             Model model) {
         OfferHost offerGuest = offerHostRepo.findById(id).orElseThrow();
@@ -90,6 +103,8 @@ public class OfferHostController {
         offerGuest.setAboutOffer(aboutOffer);
         offerGuest.setCountry(country);
         offerGuest.setCity(city);
+        offerGuest.setAddressHouse(addressHouse);
+        offerGuest.setAboutHouse(aboutHouse);
         offerHostRepo.save(offerGuest);
         return "redirect:/hosts-offer";
     }
