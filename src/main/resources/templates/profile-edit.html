@@ -9,10 +9,10 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Редактирование статьи</h1>
-    <div th:each="el : ${user}">
+    <h1>Редактирование профиля</h1>
+    <div th:each="el : ${user}" class="alert alert-info mt-2">
         <form method="post" enctype="multipart/form-data">
-            <img th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
+            <img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
             <input type="file" name="file"><br>
             <input type="text" th:value="${el.fullName}" name="fullName" placeholder="Введите ваше ФИО" class="form-control"><br>
             <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>

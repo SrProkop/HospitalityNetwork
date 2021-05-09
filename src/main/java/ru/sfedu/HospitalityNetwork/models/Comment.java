@@ -65,4 +65,8 @@ public class Comment {
     public String getAuthorName() {
         return userFrom.getFullName();
     }
+
+    public Long getAuthorId() {
+        return userFrom.getId();
+    }
 }

@@ -13,6 +13,7 @@ import ru.sfedu.HospitalityNetwork.models.User;
 import ru.sfedu.HospitalityNetwork.repo.OfferHostRepo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,11 +29,33 @@ public class OfferHostController {
         return "hosts-offer";
     }
 
-    @GetMapping("/hosts-offer/more")
-    public String allOfferHostMore(Model model) {
+    @GetMapping("/hosts-offer/page{number}")
+    public String allOfferHostMore(Model model,
+                                   @PathVariable(value = "number") int number) {
         Iterable<OfferHost> offerHosts = offerHostRepo.findAll();
-        model.addAttribute("offerHosts", offerHosts);
+        ArrayList list = new ArrayList();
+        for (OfferHost offerHost : offerHosts) {
+            list.add(offerHost);
+        }
+        if (list.size() - number*5 < -4 && number != 1) {
+            return "redirect:/";
+        }
+        ArrayList listForPage = new ArrayList();
+
+        for (int i = (number * 5) - 5; i < list.size() && i < number*5; i++ ) {
+            System.out.println(i + "---------------------------------------------------------------");
+            listForPage.add(list.get(i));
+        }
+        model.addAttribute("offerHosts", listForPage);
+
         return "hosts-offer";
+    }
+
+    @PostMapping("/hosts-offer/page{number}/next")
+    public String allOfferHostNext(Model model,
+                                   @PathVariable(value = "number") int number) {
+        number++;
+        return "/hosts-offer/page{number}";
     }
 
     @GetMapping("/hosts-offer/{id}")

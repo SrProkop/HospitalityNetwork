@@ -9,22 +9,42 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5">
     <div th:each="el : ${user}" class="alert alert-info mt-2">
-        <img th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
-        <h3 th:text="'Имя пользователя: ' + ${el.fullName}" style="text-align"></h3>
-        <h3 th:text="'Страна: ' + ${el.country}" style="text-align"></h3>
-        <h3 th:text="'Город: ' + ${el.city}" style="text-align"></h3>
-        <h3 th:text="'Адрес электронной почты: ' + ${el.emailAddress}" style="text-align"></h3>
-        <h3 th:text="'Информация о пользователе: ' + ${el.aboutUser}" style="text-align" ></h3>
+        <table>
+            <td><img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}"></td>
+            <td>
+                <h3 th:text="'Имя пользователя: ' + ${el.fullName}" style="text-align"></h3>
+                <h3 th:text="'Страна: ' + ${el.country}" style="text-align"></h3>
+                <h3 th:text="'Город: ' + ${el.city}" style="text-align"></h3>
+                <h3 th:text="'Адрес электронной почты: ' + ${el.emailAddress}" style="text-align"></h3>
+            </td>
+        </table>
+        <center><h3 style="text-align">Информация о пользователе</h3></center><br>
+        <pre th:text="${el.aboutUser}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;"></pre>
     </div>
 </div>
+
+<style>
+    .form-inline {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -ms-flex-align: center;
+    align-items: baseline;
+}
+</style>
+
 <div class="container mt-5" style="flex-grow:1">
     <h1>Комментарии к пользователю</h1>
     <div th:each="war : ${warning}" class="alert alert-info mt-2">
         <p th:text="${war}"/>
     </div>
     <div th:each="com : ${comment}" class="alert alert-info mt-2">
-        <h3 th:text="'Автор: ' + ${com.getAuthorName}"></h3>
-        <h3 th:text="'комментарий: ' + ${com.note}"></h3>
+        <form class="form-inline">
+            <pre style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;">Автор:</pre>
+            <a th:text="${com.getAuthorName}" th:href="'/user/id' + ${com.getAuthorId}" class="p-2 text-dark" style="font-size: x-large;"></a><br>
+        </form>
+        <pre th:text="${com.note}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;"></pre>
     </div>
     <div>
         <form method="post">

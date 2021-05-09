@@ -10,14 +10,14 @@
 
 <div class="container mt-5 mb-5">
     <h1>Редактирование предложения</h1>
-    <div th:each="el : ${post}">
+    <div th:each="el : ${post}" class="alert alert-info mt-2">
         <form method="post">
             <input type="text" th:value="${el.name}" name="name" placeholder="Введите название предложения" class="form-control"><br>
             <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
             <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
             <input type="text" th:value="${el.addressHouse}" name="addressHouse" placeholder="Введите адрес дома" class="form-control"><br>
             <input type="text" th:value="${el.aboutHouse}" name="aboutHouse" placeholder="Введите информацию о доме" class="form-control"><br>
-            <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" th:text="${el.aboutOffer}" style="height:250px" /><br>
+            <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" th:text="${el.aboutOffer}" style="height:70px" /><br>
             <form th:action="'/hosts-offer/' + ${el.id} + '/edit/complete'" method="post">
                 <button class="btn btn-warning" type="submit">Обновить</button>
             </form>
