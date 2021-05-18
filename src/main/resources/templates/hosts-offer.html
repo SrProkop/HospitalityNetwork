@@ -20,6 +20,9 @@
     </div>
 </div>
 
+<a align="center" th:text="${namePrevious}" th:href="'/hosts-offer/page' + ${previous}" class="p-2 text-dark" style="font-size: x-large;"></a>
+<a align="center" th:text="${nameNext}" th:href="'/hosts-offer/page' + ${next}" class="p-2 text-dark" style="font-size: x-large;"></a>
+
 <div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

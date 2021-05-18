@@ -9,18 +9,22 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5" style="flex-grow:1">
-    <h1>Добавление предложения хоста</h1>
-    <form action="/offer-host-add" method="post">
-        <input type="text" name="name" placeholder="Введите название для предложения" class="form-control"><br>
-        <input type="text" name="country" placeholder="Введите страну" class="form-control"><br>
-        <input type="text" name="city" placeholder="Введите город" class="form-control"><br>
-        <input type="text" name="addressHouse" placeholder="Введите адрес дома" class="form-control"><br>
-        <input type="text" name="aboutHouse" placeholder="Введите информацию о доме" class="form-control"><br>
-        <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" style="height:250px"></textarea><br>
-        <form th:action="'/offer-host-add/complete'" method="post">
-            <button class="btn btn-warning" type="submit">Добавить предложение</button>
+    <div class="alert alert-info mt-2">
+        <h1>Добавление предложения хоста</h1><br>
+        <form action="/offer-host-add" method="post" enctype="multipart/form-data">
+            <img width="250" th:src="@{/img/{avatar}(avatar = defHouse.jpg)}">
+            <input type="file" name="file">
+            <input type="text" name="name" placeholder="Введите название для предложения" class="form-control"><br>
+            <input type="text" name="country" placeholder="Введите страну" class="form-control"><br>
+            <input type="text" name="city" placeholder="Введите город" class="form-control"><br>
+            <input type="text" name="addressHouse" placeholder="Введите адрес дома" class="form-control"><br>
+            <input type="text" name="aboutHouse" placeholder="Введите информацию о доме" class="form-control"><br>
+            <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" style="height:250px"></textarea><br>
+            <form th:action="'/offer-host-add/complete'" method="post">
+                <button class="btn btn-warning" type="submit">Добавить предложение</button>
+            </form>
         </form>
-    </form>
+    </div>
 </div>
 
 <div th:insert="blocks/footer :: footer"></div>

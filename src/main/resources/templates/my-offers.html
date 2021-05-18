@@ -24,7 +24,7 @@
         <h3 th:text="'Город: ' + ${el.city}"></h3>
         <p th:text="'Карткая информация: ' + ${el.name}"></p>
         <p><b>Просмотры:</b> <span th:text="${el.views}"/></p>
-        <a th:href="'/guests-offer/' + ${el.id}" class="btn btn-warning">Детальнее</a>
+        <a th:href="'/guests-offer/' + ${el.id}" class="btn btn-warning">Детальнее</a><br>
     </div>
     <a th:text="${addOfferHost}" href="/offer-host-add" class="p-2 text-dark"></a>
     <a th:text="${addOfferGuest}" href="/offer-guest-add" class="p-2 text-dark"></a>

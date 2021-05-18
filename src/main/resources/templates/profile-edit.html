@@ -9,8 +9,8 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Редактирование профиля</h1>
     <div th:each="el : ${user}" class="alert alert-info mt-2">
+        <h1>Редактирование профиля</h1>
         <form method="post" enctype="multipart/form-data">
             <img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
             <input type="file" name="file"><br>

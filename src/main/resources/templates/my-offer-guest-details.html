@@ -16,17 +16,19 @@
         <h3 th:text="'Информация о багаже: ' + ${el.aboutBaggage}" style="text-align"></h3>
         <center><h3 style="text-align">Описание предложения</h3></center>
         <pre th:text="${el.aboutOffer}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: xx-large;"></pre>
-        <form class="form-inline">
-            <a th:href="'/guests-offer/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
-            <div class="col-md-10">
+        <table cellpadding="5">
+            <td>
+                <a th:href="'/guests-offer/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+            </td>
+            <td>
                 <form th:action="'/guests-offer/' + ${el.id} + '/remove'" method="post">
                     <button class="btn btn-warning" type="submit">Удалить</button>
                 </form>
-            </div>
-        </form>
-
+            </td>
+        </table>
     </div>
 </div>
+
 
 <div th:insert="blocks/footer :: footer"></div>
 </body>

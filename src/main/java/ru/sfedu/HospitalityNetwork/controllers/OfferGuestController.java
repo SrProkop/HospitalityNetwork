@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.sfedu.HospitalityNetwork.models.OfferGuest;
+import ru.sfedu.HospitalityNetwork.models.OfferHost;
 import ru.sfedu.HospitalityNetwork.models.User;
 import ru.sfedu.HospitalityNetwork.repo.OfferGuestRepo;
 
@@ -21,10 +22,42 @@ public class OfferGuestController {
     @Autowired
     OfferGuestRepo offerGuestRepo;
 
+    //Удалить
     @GetMapping("/guests-offer")
     public String allOfferGuest(Model model) {
         Iterable<OfferGuest> offerGuests = offerGuestRepo.findAll();
         model.addAttribute("offerGuests", offerGuests);
+        return "guests-offer";
+    }
+
+    @GetMapping("/guests-offer/page{number}")
+    public String allOfferGuestMore(Model model,
+                                   @PathVariable(value = "number") int number) {
+        Iterable<OfferGuest> offerGuests = offerGuestRepo.findAll();
+        ArrayList list = new ArrayList();
+        for (OfferGuest offerGuest : offerGuests) {
+            list.add(offerGuest);
+        }
+        if (list.size() - number*5 < -4 && number != 1) {
+            return "redirect:/";
+        }
+        ArrayList listForPage = new ArrayList();
+
+        for (int i = (number * 5) - 5; i < list.size() && i < number*5; i++ ) {
+            listForPage.add(list.get(i));
+        }
+        int previous = number - 1;
+        int next = number + 1;
+        if (previous > 0) {
+            model.addAttribute("previous", previous);
+            model.addAttribute("namePrevious", "<<< Предыдущая");
+        }
+        if(list.size() - (number*5) > 0) {
+            model.addAttribute("next", next);
+            model.addAttribute("nameNext", "Следующая >>>");
+        }
+        model.addAttribute("offerGuests", listForPage);
+
         return "guests-offer";
     }
 

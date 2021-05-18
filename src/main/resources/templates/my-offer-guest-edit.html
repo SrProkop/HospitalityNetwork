@@ -9,8 +9,8 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Редактирование предложения</h1>
     <div th:each="el : ${post}" class="alert alert-info mt-2">
+        <h1>Редактирование предложения</h1>
         <form method="post">
             <input type="text" th:value="${el.name}" name="name" placeholder="Введите название предложения" class="form-control"><br>
             <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>

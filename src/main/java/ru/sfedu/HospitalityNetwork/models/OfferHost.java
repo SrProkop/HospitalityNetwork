@@ -30,6 +30,7 @@ public class OfferHost extends Offer{
     private boolean personalMeeting;
     private String addressHouse;
     private String aboutHouse;
+    private String avatar;
 
     public User getAuthor() {
         return author;
@@ -61,6 +62,14 @@ public class OfferHost extends Offer{
 
     public void setAboutHouse(String aboutHouse) {
         this.aboutHouse = aboutHouse;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getAuthorName() {

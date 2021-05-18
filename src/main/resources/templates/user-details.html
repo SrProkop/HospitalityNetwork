@@ -10,7 +10,9 @@
 <div class="container mt-5">
     <div th:each="el : ${user}" class="alert alert-info mt-2">
         <table>
-            <td><img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}"></td>
+            <td>
+                <img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
+            </td>
             <td>
                 <h3 th:text="'Имя пользователя: ' + ${el.fullName}" style="text-align"></h3>
                 <h3 th:text="'Страна: ' + ${el.country}" style="text-align"></h3>
@@ -20,6 +22,29 @@
         </table>
         <center><h3 style="text-align">Информация о пользователе</h3></center><br>
         <pre th:text="${el.aboutUser}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;"></pre>
+    </div>
+</div>
+
+<div class="container mt-5" style="flex-grow:1">
+    <h1>Предложения пользователя</h1>
+    <div th:each="war : ${warningOffer}" class="alert alert-info mt-2">
+        <p th:text="${war}"/>
+    </div>
+    <div th:each="el : ${offerHosts}" class="alert alert-info mt-2">
+        <h3 th:text="'Автор: ' + ${el.getAuthorName}"></h3>
+        <h3 th:text="'Страна: ' + ${el.country}"></h3>
+        <h3 th:text="'Город: ' + ${el.city}"></h3>
+        <p th:text="'Карткая информация: ' + ${el.name}"></p>
+        <p><b>Просмотры:</b> <span th:text="${el.views}"/></p>
+        <a th:href="'/hosts-offer/' + ${el.id}" class="btn btn-warning">Детальнее</a>
+    </div>
+    <div th:each="el : ${offerGuests}" class="alert alert-info mt-2">
+        <h3 th:text="'Автор: ' + ${el.getAuthorName}"></h3>
+        <h3 th:text="'Страна: ' + ${el.country}"></h3>
+        <h3 th:text="'Город: ' + ${el.city}"></h3>
+        <p th:text="'Карткая информация: ' + ${el.name}"></p>
+        <p><b>Просмотры:</b> <span th:text="${el.views}"/></p>
+        <a th:href="'/guests-offer/' + ${el.id}" class="btn btn-warning">Детальнее</a><br>
     </div>
 </div>
 
@@ -35,7 +60,7 @@
 </style>
 
 <div class="container mt-5" style="flex-grow:1">
-    <h1>Комментарии к пользователю</h1>
+    <h1 th:text="'Комментарии к пользователю: ' + ${quantityComment}"></h1>
     <div th:each="war : ${warning}" class="alert alert-info mt-2">
         <p th:text="${war}"/>
     </div>
@@ -45,6 +70,9 @@
             <a th:text="${com.getAuthorName}" th:href="'/user/id' + ${com.getAuthorId}" class="p-2 text-dark" style="font-size: x-large;"></a><br>
         </form>
         <pre th:text="${com.note}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;"></pre>
+        <form th:action="'/comment/' + ${com.id} + '/remove'" th:if="${com.getAuthorId} == ${myId}" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
+        </form>
     </div>
     <div>
         <form method="post">
@@ -54,7 +82,6 @@
             </form>
         </form>
     </div>
-
 </div>
 
 <div th:insert="blocks/footer :: footer"></div>

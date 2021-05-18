@@ -28,6 +28,38 @@
     </div>
 </div>
 
+
+<div class="container mt-5" style="flex-grow:1">
+    <h1>Предложения пользователя</h1>
+    <div th:each="el : ${offerHosts}" class="alert alert-info mt-2">
+        <h3 th:text="'Автор: ' + ${el.getAuthorName}"></h3>
+        <h3 th:text="'Страна: ' + ${el.country}"></h3>
+        <h3 th:text="'Город: ' + ${el.city}"></h3>
+        <p th:text="'Карткая информация: ' + ${el.name}"></p>
+        <p><b>Просмотры:</b> <span th:text="${el.views}"/></p>
+        <a th:href="'/hosts-offer/' + ${el.id}" class="btn btn-warning">Детальнее</a>
+    </div>
+    <div th:each="el : ${offerGuests}" class="alert alert-info mt-2">
+        <h3 th:text="'Автор: ' + ${el.getAuthorName}"></h3>
+        <h3 th:text="'Страна: ' + ${el.country}"></h3>
+        <h3 th:text="'Город: ' + ${el.city}"></h3>
+        <p th:text="'Карткая информация: ' + ${el.name}"></p>
+        <p><b>Просмотры:</b> <span th:text="${el.views}"/></p>
+        <a th:href="'/guests-offer/' + ${el.id}" class="btn btn-warning">Детальнее</a><br>
+    </div>
+    <div class="alert alert-info mt-2" th:if="${addOfferHost}">
+        <center>
+            <a th:text="${addOfferHost}" href="/offer-host-add" class="p-2 text-dark"></a>
+        </center>
+    </div>
+    <div class="alert alert-info mt-2" th:if="${addOfferGuest}">
+        <center>
+            <a th:text="${addOfferGuest}" href="/offer-guest-add" class="p-2 text-dark"></a>
+        </center>
+    </div>
+</div>
+
+
 <style>
     .form-inline {
     display: -ms-flexbox;

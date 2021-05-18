@@ -13,17 +13,28 @@
         <h3 th:text="'Страна: ' + ${el.country}" style="text-align"></h3>
         <h3 th:text="'Город: ' + ${el.city}" style="text-align"></h3>
         <h3 th:text="'Адрес дома: ' + ${el.addressHouse}" style="text-align"></h3>
-        <h3 th:text="'Информация о доме: ' + ${el.aboutHouse}" style="text-align"></h3>
+        <center><h3 style="text-align">Информация о доме</h3></center>
+        <table cellpadding="5">
+            <td th:if="${el.avatar}">
+                <img width="350" th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
+            </td>
+            <td>
+                <pre th:text="${el.aboutHouse}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: xx-large;"></pre>
+            </td>
+        </table>
         <center><h3 style="text-align">Описание предложения</h3></center>
         <pre th:text="${el.aboutOffer}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: xx-large;"></pre>
-        <form class="form-inline">
-            <a th:href="'/guests-offer/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
-            <div class="col-md-10">
-                <form th:action="'/guests-offer/' + ${el.id} + '/remove'" method="post">
+        <table cellpadding="5">
+            <td>
+                <a th:href="'/hosts-offer/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+            </td>
+            <td>
+                <form th:action="'/hosts-offer/' + ${el.id} + '/remove'" method="post">
                     <button class="btn btn-warning" type="submit">Удалить</button>
                 </form>
-            </div>
-        </form>
+            </td>
+        </table>
+
     </div>
 </div>
 

@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sfedu.HospitalityNetwork.models.Comment;
+import ru.sfedu.HospitalityNetwork.models.OfferGuest;
+import ru.sfedu.HospitalityNetwork.models.OfferHost;
 import ru.sfedu.HospitalityNetwork.models.User;
 import ru.sfedu.HospitalityNetwork.repo.CommentRepo;
+import ru.sfedu.HospitalityNetwork.repo.OfferGuestRepo;
+import ru.sfedu.HospitalityNetwork.repo.OfferHostRepo;
 import ru.sfedu.HospitalityNetwork.repo.UserRepo;
 
 import java.io.File;
@@ -29,6 +33,10 @@ public class ProfileController {
     UserRepo userRepo;
     @Autowired
     CommentRepo commentRepo;
+    @Autowired
+    OfferHostRepo offerHostRepo;
+    @Autowired
+    OfferGuestRepo offerGuestRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -40,6 +48,34 @@ public class ProfileController {
         Optional<User> optionalUser = userRepo.findById(user.getId());
         User profileUser = optionalUser.get();
         model.addAttribute("user", profileUser);
+
+
+        Iterable<OfferHost> offerHosts = offerHostRepo.findAll();
+        List<OfferHost> listOfferHost = new ArrayList<>();
+        for (OfferHost offerHost : offerHosts) {
+            if (offerHost.getAuthor().getId() == user.getId()) {
+                listOfferHost.add(offerHost);
+            }
+        }
+        if (listOfferHost.size() != 0) {
+            model.addAttribute("offerHosts", listOfferHost);
+        } else {
+            model.addAttribute("addOfferHost", "Добавить предложение хоста");
+        }
+
+        Iterable<OfferGuest> offerGuests = offerGuestRepo.findAll();
+        List<OfferGuest> listOfferGuest = new ArrayList<>();
+        for (OfferGuest offerGuest : offerGuests) {
+            if (offerGuest.getAuthor().getId() == user.getId()) {
+                listOfferGuest.add(offerGuest);
+            }
+        }
+        if (listOfferGuest.size() != 0) {
+            model.addAttribute("offerGuests", listOfferGuest);
+        } else {
+            model.addAttribute("addOfferGuest", "Добавить предложение гостя");
+        }
+
         Iterable<Comment> comments = commentRepo.findAll();
         List<Comment> listComment = new ArrayList<>();
         for (Comment comment : comments) {
@@ -53,6 +89,16 @@ public class ProfileController {
             model.addAttribute("warning", "У данного пользователя ещё нет отзывов!");
         }
         return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String addCommentForProfile(
+            @AuthenticationPrincipal User userFrom,
+            @RequestParam String note,
+            Model model) {
+        Comment comment = new Comment(userFrom, userFrom, note);
+        commentRepo.save(comment);
+        return "redirect:/profile";
     }
 
     @GetMapping("/profile/edit")
