@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Статья</title>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -10,7 +10,7 @@
 
 <div class="container mt-5" style="flex-grow:1">
     <h1 th:text="'Комментарии к пользователю: '"></h1>
-    <div th:each="com : ${comment}" class="alert alert-info mt-2">
+    <div th:each="com : ${comments}" class="alert alert-info mt-2">
         <form class="form-inline">
             <pre style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;">Автор:</pre>
             <a th:text="${com.getAuthorName}" th:href="'/user/id' + ${com.getAuthorId}" class="p-2 text-dark" style="font-size: x-large;"></a><br>
@@ -23,7 +23,7 @@
     <div>
         <form method="post">
             <input type="text" name="note" placeholder="Оставьте ваш комментарий" class="form-control"><br>
-            <form th:action="'/user/id' + ${user.id} + '/addComment'" method="post">
+            <form th:action="'/user/id' + ${myId} + '/addCommentComplete'" method="post">
                 <button class="btn btn-warning" type="submit">Добавить</button>
             </form>
         </form>

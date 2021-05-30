@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${title}"/>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -32,39 +32,27 @@
         max-width: 200px;
         font-size: 22px;
     }
-    .field {
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
-    }
-    .field label {
-        padding-right: 8px;
-        line-height: 20px;
-    }
-    .field input {
-        border-radius: 6px;
-        padding: 3px;
-    }
     .btn1 {
         padding: 3px; border-radius: 8px; width: 40%; align-self: center;
     }
 </style>
 
 <div class="content" >
-    <h4>Авторизация</h4><br>
-    <p class="text-danger" th:if="${message}" th:text="${message}"></p>
-    <form th:action="@{/login}" method="post" style="display: flex; flex-direction: column; gap: 20px; align-content: center" >
-        <div class="field">
-            <label for="username"> Логин: </label>
-            <input type="text" id="username" name="username"/>
-        </div>
-        <div class="field">
-            <label for="password"> Пароль: </label>
-            <input type="password" id="password" name="password"/>
-        </div>
-        <input class="btn btn-outline-primary" type="submit" value="Вход"/>
-        <a href="/registration" class="btn btn-outline-success">Регистрация</a>
-    </form>
+    <div class="alert alert-info mt-2">
+        <center><h4>Авторизация</h4><br></center>
+        <p class="text-danger" th:if="${message}" th:text="${message}"></p>
+        <form th:action="@{/login}" method="post" style="display: flex; flex-direction: column; gap: 20px; align-content: center" >
+            <div>
+                <input type="text" id="username" name="username" placeholder="Логин" class="form-control"/>
+            </div>
+            <div>
+                <input type="password" id="password" name="password" placeholder="Пароль" class="form-control"/>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Вход"/>
+            <a href="/registration" class="btn btn-success">Регистрация</a>
+        </form>
+    </div>
+
 </div>
 
 <div th:insert="blocks/footer :: footer"></div>

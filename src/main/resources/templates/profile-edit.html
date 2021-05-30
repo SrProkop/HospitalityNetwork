@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Редактирование статьи</title>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -12,13 +12,60 @@
     <div th:each="el : ${user}" class="alert alert-info mt-2">
         <h1>Редактирование профиля</h1>
         <form method="post" enctype="multipart/form-data">
-            <img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
+            <img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}"><br>
+            <label>Удалить фотографию профиля</label>
+            <input type="checkbox" name="checkbox"><br>
+            <label>Изменить</label>
             <input type="file" name="file"><br>
-            <input type="text" th:value="${el.fullName}" name="fullName" placeholder="Введите ваше ФИО" class="form-control"><br>
-            <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
-            <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
-            <input type="text" th:value="${el.emailAddress}" name="emailAddress" placeholder="Введите электронную почту" class="form-control"><br>
-            <textarea name="aboutUser" placeholder="Введите информацию о пользователе" class="form-control" th:text="${el.aboutUser}" style="height:100px" /><br>
+            <div th:if="${fullNameError}">
+                <input type="text" th:value="${el.fullName}" name="fullName" placeholder="Введите ваше ФИО" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${fullNameError}"/>
+                </div>
+            </div>
+            <div th:unless="${fullNameError}">
+                <input type="text" th:value="${el.fullName}" name="fullName" placeholder="Введите ваше ФИО" class="form-control"><br>
+            </div>
+
+            <div th:if="${countryError}">
+                <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${countryError}"/>
+                </div>
+            </div>
+            <div th:unless="${countryError}">
+                <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
+            </div>
+
+            <div th:if="${cityError}">
+                <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${cityError}"/>
+                </div>
+            </div>
+            <div th:unless="${cityError}">
+                <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
+            </div>
+
+            <div th:if="${emailAddressError}">
+                <input type="text" th:value="${el.emailAddress}" name="emailAddress" placeholder="Введите электронную почту" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${emailAddressError}"/>
+                </div>
+            </div>
+            <div th:unless="${emailAddressError}">
+                <input type="text" th:value="${el.emailAddress}" name="emailAddress" placeholder="Введите электронную почту" class="form-control"><br>
+            </div>
+
+            <div th:if="${aboutUserError}">
+                <input type="text" th:value="${el.aboutUser}" name="aboutUser" placeholder="Введите информацию о пользователе" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${aboutUserError}"/>
+                </div>
+            </div>
+            <div th:unless="${aboutUserError}">
+                <textarea name="aboutUser" placeholder="Введите информацию о пользователе" class="form-control" th:text="${el.aboutUser}" style="height:100px" /><br>
+            </div>
             <form th:action="'/profile/edit/complete'" method="post">
                 <button class="btn btn-warning" type="submit">Обновить</button>
             </form>

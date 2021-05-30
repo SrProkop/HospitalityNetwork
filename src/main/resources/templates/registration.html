@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${title}"/>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -51,19 +51,40 @@
 </style>
 
 <div class="content" >
-    <h4>Регистрация</h4><br>
-    <p class="text-danger" th:if="${message}" th:text="${message}"></p>
-    <form th:action="@{/registration}" method="post" style="display: flex; flex-direction: column; gap: 20px; align-content: center" >
-        <div class="field">
-            <label for="username"> Логин: </label>
-            <input type="text" id="username" name="username"/>
-        </div>
-        <div class="field">
-            <label for="password"> Пароль: </label>
-            <input type="password" id="password" name="password"/>
-        </div>
-        <input class="btn btn-outline-success" type="submit" value="Зарегистрироваться"/>
-    </form>
+    <div class="alert alert-info mt-2">
+        <center><h4>Регистрация</h4><br></center>
+        <p class="text-danger" th:if="${message}" th:text="${message}"></p>
+        <form th:action="@{/registration}" method="post" style="display: flex; flex-direction: column; gap: 20px; align-content: center" >
+            <div th:if="${fullNameError}">
+                <input type="text" name="fullName" placeholder="Имя пользователя" class="form-control is-invalid"/>
+                <div class="invalid-feedback">
+                    <label th:text="${fullNameError}"/>
+                </div>
+            </div>
+            <div th:unless="${fullNameError}">
+                <input type="text" name="fullName" placeholder="Имя пользователя" class="form-control"/>
+            </div>
+            <div th:if="${usernameError}">
+                <input type="text" name="username" id="inputLoginInvalid" placeholder="Логин" class="form-control is-invalid"/>
+                <div class="invalid-feedback">
+                    <label th:text="${usernameError}"/>
+                </div>
+            </div>
+            <div th:unless="${usernameError}">
+                <input type="text" name="username" id="inputLoginValid" placeholder="Логин" class="form-control"/>
+            </div>
+            <div th:if="${passwordError}">
+                <input type="password" name="password" placeholder="Пароль" class="form-control is-invalid"/>
+                <div class="invalid-feedback">
+                    <label th:text="${passwordError}"/>
+                </div>
+            </div>
+            <div th:unless="${passwordError}">
+                <input type="password" name="password" placeholder="Пароль" class="form-control"/>
+            </div>
+            <input class="btn btn-success" type="submit" value="Зарегистрироваться"/>
+        </form>
+    </div>
 </div>
 
 

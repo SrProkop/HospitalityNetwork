@@ -5,26 +5,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.sfedu.HospitalityNetwork.models.Comment;
-import ru.sfedu.HospitalityNetwork.models.OfferGuest;
-import ru.sfedu.HospitalityNetwork.models.OfferHost;
-import ru.sfedu.HospitalityNetwork.models.User;
+import ru.sfedu.HospitalityNetwork.models.*;
 import ru.sfedu.HospitalityNetwork.repo.CommentRepo;
 import ru.sfedu.HospitalityNetwork.repo.OfferGuestRepo;
 import ru.sfedu.HospitalityNetwork.repo.OfferHostRepo;
 import ru.sfedu.HospitalityNetwork.repo.UserRepo;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class ProfileController {
@@ -48,6 +43,7 @@ public class ProfileController {
         Optional<User> optionalUser = userRepo.findById(user.getId());
         User profileUser = optionalUser.get();
         model.addAttribute("user", profileUser);
+        model.addAttribute("myId", user.getId());
 
 
         Iterable<OfferHost> offerHosts = offerHostRepo.findAll();
@@ -85,8 +81,11 @@ public class ProfileController {
         }
         if (listComment.size() > 0) {
             model.addAttribute("comment", listComment);
+            model.addAttribute("quantityComment", listComment.size());
         } else {
-            model.addAttribute("warning", "У данного пользователя ещё нет отзывов!");
+            model.addAttribute("comment", null);
+            model.addAttribute("warning", "У данного пользователя ещё нет комментариев!");
+            model.addAttribute("quantityComment", 0);
         }
         return "profile";
     }
@@ -94,10 +93,24 @@ public class ProfileController {
     @PostMapping("/profile")
     public String addCommentForProfile(
             @AuthenticationPrincipal User userFrom,
-            @RequestParam String note,
+            @Valid Comment comment,
+            BindingResult bindingResult,
             Model model) {
-        Comment comment = new Comment(userFrom, userFrom, note);
-        commentRepo.save(comment);
+        comment.setUserFrom(userFrom);
+        comment.setUserTo(userFrom);
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            System.out.println(errorsMap.size());
+            for (Map.Entry<String, String> item : errorsMap.entrySet()) {
+                System.out.println("Key = " + item.getKey() + "   Value = " + item.getValue());
+            }
+            model.mergeAttributes(errorsMap);
+            return myProfile(userFrom, model);
+        } else {
+            commentRepo.save(comment);
+        }
+
         return "redirect:/profile";
     }
 
@@ -119,7 +132,9 @@ public class ProfileController {
             @RequestParam String city,
             @RequestParam String emailAddress,
             @RequestParam String aboutUser,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam(defaultValue = "false") boolean checkbox,
+            @RequestParam("file") MultipartFile file,
+            Model model) throws IOException {
         User myAccount = userRepo.findById(user.getId()).orElseThrow();
         myAccount.setFullName(fullName);
         myAccount.setCountry(country);
@@ -134,6 +149,15 @@ public class ProfileController {
 
             myAccount.setAvatar(resultFilename);
         }
+
+        if (checkbox) {
+            myAccount.setAvatar("def.jpg");
+        }
+
+        if (checkErrors(fullName, country, city, emailAddress, aboutUser, model)) {
+            return profileEdit(myAccount, model);
+        }
+
 
         userRepo.save(myAccount);
         return "redirect:/profile";
@@ -163,8 +187,44 @@ public class ProfileController {
 
             myAccount.setAvatar(resultFilename);
         }
+
+
         userRepo.save(myAccount);
         return "redirect:/profile";
+    }
+
+    public Boolean checkErrors(String fullName,
+                             String country,
+                             String city,
+                             String emailAddress,
+                             String aboutUser,
+                             Model model) {
+        boolean check = false;
+        if(fullName.trim().length() == 0) {
+            model.addAttribute("fullNameError", "Имя не может быть пустым");
+            check = true;
+        } else if (fullName.length() > 48) {
+            model.addAttribute("fullNameError", "Максимальная длина имени 48 символов");
+            check = true;
+        }
+        if(country.length() > 64) {
+            model.addAttribute("countryError", "Максимальная длина 64 символа");
+            check = true;
+        }
+        if(city.length() > 64) {
+            model.addAttribute("cityError", "Максимальная длина 64 символа");
+            check = true;
+        }
+        if(emailAddress.length() > 64) {
+            model.addAttribute("emailError", "Максимальная длина почты 64 символа");
+            check = true;
+        }
+        if(aboutUser.length() > 512) {
+            model.addAttribute("aboutUserError", "Максимальная длина информации 512 символов");
+            check = true;
+        }
+
+        return check;
     }
 
 }

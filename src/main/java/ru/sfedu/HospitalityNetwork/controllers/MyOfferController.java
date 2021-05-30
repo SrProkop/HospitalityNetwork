@@ -6,21 +6,25 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import ru.sfedu.HospitalityNetwork.models.Comment;
 import ru.sfedu.HospitalityNetwork.models.OfferGuest;
 import ru.sfedu.HospitalityNetwork.models.OfferHost;
 import ru.sfedu.HospitalityNetwork.models.User;
 import ru.sfedu.HospitalityNetwork.repo.OfferGuestRepo;
 import ru.sfedu.HospitalityNetwork.repo.OfferHostRepo;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -80,16 +84,23 @@ public class MyOfferController {
     @PostMapping("/offer-guest-add")
     public String offerGuestAdd(
             @AuthenticationPrincipal User user,
-            @RequestParam String name,
-            @RequestParam String country,
-            @RequestParam String city,
-            @RequestParam String aboutOffer,
-            @RequestParam String causeVisit,
-            @RequestParam String aboutBaggage,
+            @Valid OfferGuest offerGuest,
+            BindingResult bindingResult,
             Model model) {
-        OfferGuest post = new OfferGuest(name, country, city, aboutOffer, user, causeVisit, aboutBaggage);
-        offerGuestRepo.save(post);
-        return "redirect:/guests-offer";
+        offerGuest.setAuthor(user);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            System.out.println(errorsMap.size());
+            for (Map.Entry<String, String> item : errorsMap.entrySet()) {
+                System.out.println("Key = " + item.getKey() + "   Value = " + item.getValue());
+            }
+            model.mergeAttributes(errorsMap);
+            return offerGuestAdd(user, model);
+        } else {
+            offerGuestRepo.save(offerGuest);
+        }
+
+        return "redirect:/profile";
     }
 
     @PostMapping("/offer-guest-add/complete")
@@ -125,27 +136,27 @@ public class MyOfferController {
     @PostMapping("/offer-host-add")
     public String offerHostAdd(
             @AuthenticationPrincipal User user,
-            @RequestParam String name,
-            @RequestParam String country,
-            @RequestParam String city,
-            @RequestParam String aboutOffer,
-            @RequestParam String addressHouse,
-            @RequestParam String aboutHouse,
-            @RequestParam("file") MultipartFile file) throws IOException {
-        OfferHost offerHost = new OfferHost(name, country, city, aboutOffer, user, addressHouse, aboutHouse);
-        System.out.println("0 -----------------------------");
-        if (!file.isEmpty()) {
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-            System.out.println("1 -----------------------------");
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
+            @RequestParam("file") MultipartFile file,
+            @Valid OfferHost offerHost,
+            BindingResult bindingResult,
+            Model model) throws IOException {
+        offerHost.setAuthor(user);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            System.out.println(errorsMap.size());
+            model.mergeAttributes(errorsMap);
+            return offerHostAdd(user, model);
+        } else {
+            if (!file.isEmpty()) {
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-            offerHost.setAvatar(resultFilename);
+                offerHost.setAvatar(resultFilename);
+            }
+            offerHostRepo.save(offerHost);
         }
-        System.out.println("2 -----------------------------");
-        offerHostRepo.save(offerHost);
-        System.out.println("3 -----------------------------");
-        return "redirect:/hosts-offer";
+        return "redirect:/profile";
     }
 
     @PostMapping("/offer-host-add/complete")

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Статья</title>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -9,7 +9,8 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5">
     <div th:each="el : ${user}" class="alert alert-info mt-2">
-        <table>
+        <center><h1>Профиль пользователя</h1></center><br>
+        <table cellpadding="10">
             <td>
                 <img width="250" th:src="@{/img/{avatar}(avatar = ${el.avatar})}">
             </td>
@@ -60,10 +61,26 @@
 </style>
 
 <div class="container mt-5" style="flex-grow:1">
-    <h1 th:text="'Комментарии к пользователю: ' + ${quantityComment}"></h1>
+    <h1 th:text="'Комментарии к пользователю: ' + ${quantityComment}"></h1><br>
     <div th:each="war : ${warning}" class="alert alert-info mt-2">
         <p th:text="${war}"/>
     </div>
+    <div>
+        <form method="post">
+            <div th:if="${noteError}">
+                <input th:if="${noteError}" type="text" name="note" placeholder="Оставьте ваш комментарий" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${noteError}"/>
+                </div>
+            </div>
+            <div th:unless="${noteError}">
+                <input type="text" name="note" placeholder="Оставьте ваш комментарий" class="form-control"><br>
+            </div>
+            <form th:action="'/user/id' + ${user.id} + '/addComment'" method="post">
+                <button class="btn btn-warning" type="submit">Добавить</button>
+            </form>
+        </form>
+    </div><br>
     <div th:each="com : ${comment}" class="alert alert-info mt-2">
         <form class="form-inline">
             <pre style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;">Автор:</pre>
@@ -72,14 +89,6 @@
         <pre th:text="${com.note}" style="background-blend-mode: overlay; white-space: break-spaces;font-size: x-large;"></pre>
         <form th:action="'/comment/' + ${com.id} + '/remove'" th:if="${com.getAuthorId} == ${myId}" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>
-        </form>
-    </div>
-    <div>
-        <form method="post">
-            <input type="text" name="note" placeholder="Оставьте ваш комментарий" class="form-control"><br>
-            <form th:action="'/user/id' + ${user.id} + '/addComment'" method="post">
-                <button class="btn btn-warning" type="submit">Добавить</button>
-            </form>
         </form>
     </div>
 </div>

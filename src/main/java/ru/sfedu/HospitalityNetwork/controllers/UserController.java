@@ -1,28 +1,24 @@
 package ru.sfedu.HospitalityNetwork.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.sfedu.HospitalityNetwork.models.Comment;
-import ru.sfedu.HospitalityNetwork.models.OfferGuest;
-import ru.sfedu.HospitalityNetwork.models.OfferHost;
-import ru.sfedu.HospitalityNetwork.models.User;
+import ru.sfedu.HospitalityNetwork.models.*;
 import ru.sfedu.HospitalityNetwork.repo.CommentRepo;
 import ru.sfedu.HospitalityNetwork.repo.OfferGuestRepo;
 import ru.sfedu.HospitalityNetwork.repo.OfferHostRepo;
 import ru.sfedu.HospitalityNetwork.repo.UserRepo;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -81,6 +77,7 @@ public class UserController {
             model.addAttribute("comment", listComment);
             model.addAttribute("quantityComment", listComment.size());
         } else {
+            model.addAttribute("comment", null);
             model.addAttribute("warning", "У данного пользователя ещё нет комментариев!");
             model.addAttribute("quantityComment", 0);
         }
@@ -90,12 +87,26 @@ public class UserController {
     @PostMapping("/user/id{id}")
     public String addComment(
             @AuthenticationPrincipal User userFrom,
-            @RequestParam String note,
             @PathVariable(value = "id") long id,
+            @Valid Comment comment,
+            BindingResult bindingResult,
             Model model) {
         Optional<User> userTo = userRepo.findById(id);
-        Comment comment = new Comment(userFrom, userTo.get(), note);
-        commentRepo.save(comment);
+        comment.setUserFrom(userFrom);
+        comment.setUserTo(userTo.get());
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            System.out.println(errorsMap.size());
+            for (Map.Entry<String, String> item : errorsMap.entrySet()) {
+                System.out.println("Key = " + item.getKey() + "   Value = " + item.getValue());
+            }
+            model.mergeAttributes(errorsMap);
+            return UserDetails(id, userFrom, model);
+        } else {
+            commentRepo.save(comment);
+        }
+
         return "redirect:/user/id{id}";
     }
 
@@ -106,8 +117,20 @@ public class UserController {
             @PathVariable(value = "id") long id,
             Model model) {
         Optional<User> userTo = userRepo.findById(id);
-        Comment comment = new Comment(userFrom, userTo.get(), "note");
+        Comment comment = new Comment(userFrom, userTo.get(), note);
         commentRepo.save(comment);
         return "redirect:/user/id{id}";
+    }
+
+    @PostMapping("/user/id{id}/addCommentComplete")
+    public String addCommentCompleteForPage(
+            @AuthenticationPrincipal User userFrom,
+            @RequestParam String note,
+            @PathVariable(value = "id") long id,
+            Model model) {
+        Optional<User> userTo = userRepo.findById(id);
+        Comment comment = new Comment(userFrom, userTo.get(), "note");
+        commentRepo.save(comment);
+        return "redirect:/user" + id + "/comments/page1";
     }
 }

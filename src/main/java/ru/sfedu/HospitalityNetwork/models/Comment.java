@@ -1,6 +1,9 @@
 package ru.sfedu.HospitalityNetwork.models;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Comment")
@@ -28,6 +31,8 @@ public class Comment {
     @JoinColumn(name = "userTo_id")
     private User userTo;
 
+    @NotBlank(message = "Комментарий не может быть пустым")
+    @Length(max = 255, message = "Вы превысили длину сообщения")
     private String note;
 
     public Long getId() {

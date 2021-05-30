@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" style="height: 100%">
 <head>
-    <title>Блог Сайта</title>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -10,6 +10,23 @@
 
 <div class="container mt-5" style="flex-grow:1">
     <h1>Предложения гостей</h1>
+    <table cellpadding="3">
+        <div>
+            <form method="post">
+                <td>
+                    <input type="text" name="country" placeholder="Страна" class="form-control"/>
+                </td>
+                <td>
+                    <input type="text" name="city" placeholder="Город" class="form-control"/>
+                </td>
+                <td>
+                    <form th:action="'/guests-offer/search'" method="post">
+                        <button class="btn btn-warning" type="submit">Поиск</button>
+                    </form>
+                </td>
+            </form>
+        </div>
+    </table>
     <div th:each="el : ${offerGuests}" class="alert alert-info mt-2">
         <h3 th:text="'Автор: ' + ${el.getAuthorName}"></h3>
         <h3 th:text="'Страна: ' + ${el.country}"></h3>

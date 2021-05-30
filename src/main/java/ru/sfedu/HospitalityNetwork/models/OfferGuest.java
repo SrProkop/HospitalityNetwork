@@ -1,5 +1,7 @@
 package ru.sfedu.HospitalityNetwork.models;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -23,29 +25,10 @@ public class OfferGuest extends Offer{
 
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User author;
-
+    @Length(max = 256, message = "Максимальная длина 256 символов")
     private String causeVisit;
-    private int numberDay;
+    @Length(max = 256, message = "Максимальная длина 256 символов")
     private String aboutBaggage;
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public int getNumberDay() {
-        return numberDay;
-    }
-
-    public void setNumberDay(int numberDay) {
-        this.numberDay = numberDay;
-    }
 
     public String getAboutBaggage() {
         return aboutBaggage;
@@ -64,10 +47,10 @@ public class OfferGuest extends Offer{
     }
 
     public String getAuthorName() {
-        return author.getFullName();
+        return super.getAuthor().getFullName();
     }
 
     public Long getAuthorId() {
-        return author.getId();
+        return super.getAuthor().getId();
     }
 }

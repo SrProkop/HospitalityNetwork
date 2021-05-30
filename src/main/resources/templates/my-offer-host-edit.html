@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Редактирование статьи</title>
+    <title>HospNet</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -18,12 +18,67 @@
             <input type="checkbox" name="checkbox"><br>
             <label>Изменить</label>
             <input type="file" name="file"><br>
-            <input type="text" th:value="${el.name}" name="name" placeholder="Введите название предложения" class="form-control"><br>
-            <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
-            <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
-            <input type="text" th:value="${el.addressHouse}" name="addressHouse" placeholder="Введите адрес дома" class="form-control"><br>
-            <input type="text" th:value="${el.aboutHouse}" name="aboutHouse" placeholder="Введите информацию о доме" class="form-control"><br>
-            <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" th:text="${el.aboutOffer}" style="height:70px" /><br>
+
+            <div th:if="${nameError}">
+                <input type="text" th:value="${el.name}" name="name" placeholder="Введите название для предложения" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${nameError}"/>
+                </div>
+            </div>
+            <div th:unless="${nameError}">
+                <input type="text" th:value="${el.name}" name="name" placeholder="Введите название предложения" class="form-control"><br>
+            </div>
+
+            <div th:if="${countryError}">
+                <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${countryError}"/>
+                </div>
+            </div>
+            <div th:unless="${countryError}">
+                <input type="text" th:value="${el.country}" name="country" placeholder="Введите страну" class="form-control"><br>
+            </div>
+
+            <div th:if="${cityError}">
+                <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${cityError}"/>
+                </div>
+            </div>
+            <div th:unless="${cityError}">
+                <input type="text" th:value="${el.city}" name="city" placeholder="Введите город" class="form-control"><br>
+            </div>
+
+            <div th:if="${addressHouseError}">
+                <input type="text" th:value="${el.addressHouse}" name="addressHouse" placeholder="Введите адрес дома" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${addressHouseError}"/>
+                </div>
+            </div>
+            <div th:unless="${addressHouseError}">
+                <input type="text" th:value="${el.addressHouse}" name="addressHouse" placeholder="Введите адрес дома" class="form-control"><br>
+            </div>
+
+            <div th:if="${aboutHouseError}">
+                <input type="text" th:value="${el.aboutHouse}" name="aboutHouse" placeholder="Введите информацию о доме" class="form-control is-invalid">
+                <div class="invalid-feedback">
+                    <label th:text="${aboutHouseError}"/>
+                </div>
+            </div>
+            <div th:unless="${aboutHouseError}">
+                <input type="text" th:value="${el.aboutHouse}" name="aboutHouse" placeholder="Введите информацию о доме" class="form-control"><br>
+            </div>
+
+            <div th:if="${aboutOfferError}">
+                <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control is-invalid" th:text="${el.aboutOffer}" style="height:250px"></textarea>
+                <div class="invalid-feedback">
+                    <label th:text="${aboutOfferError}"/>
+                </div>
+            </div>
+            <div th:unless="${aboutOfferError}">
+                <textarea name="aboutOffer" placeholder="Введите описание предложения" class="form-control" th:text="${el.aboutOffer}" style="height:70px" /><br>
+            </div>
+
             <form th:action="'/hosts-offer/' + ${el.id} + '/edit/complete'" method="post">
                 <button class="btn btn-warning" type="submit">Обновить</button>
             </form>

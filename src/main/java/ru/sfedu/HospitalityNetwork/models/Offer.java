@@ -1,5 +1,7 @@
 package ru.sfedu.HospitalityNetwork.models;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -9,12 +11,17 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    @Length(max = 256, message = "Максимальная длина 256 символов")
     private String name;
-
+    @Length(max = 1028, message = "Максимальная длина 1028 символов")
     private String aboutOffer;
-
+    @Length(max = 64, message = "Максимальная длина 64 символа")
     private String country;
-
+    @Length(max = 64, message = "Максимальная длина 64 символа")
     private String city;
 
     private int views;
@@ -37,6 +44,14 @@ public class Offer {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getName() {

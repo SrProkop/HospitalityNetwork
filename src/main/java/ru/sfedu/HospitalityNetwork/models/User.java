@@ -1,10 +1,12 @@
 package ru.sfedu.HospitalityNetwork.models;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.sfedu.HospitalityNetwork.enums.Role;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,14 +16,23 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Length(max = 20, message = "Максимальная длина логина 20 символов")
+    @NotBlank(message = "Логин не может быть пустым")
     private String username;
+    @NotBlank(message = "Пароль не может быть пустым")
     private String password;
     private boolean active;
 
+    @Length(max = 48, message = "Максимальная длина почты 64 символа")
     private String emailAddress = "";
+    @Length(max = 512, message = "Максимальная длина информации 512 символов")
     private String aboutUser = "";
+    @Length(max = 48, message = "Максимальная длина имени 48 символов")
+    @NotBlank(message = "Имя не может быть пустым")
     private String fullName = "";
+    @Length(max = 48, message = "Максимальная длина 64 символа")
     private String country = "";
+    @Length(max = 48, message = "Максимальная длина 64 символа")
     private String city = "";
     private String avatar = "def.jpg";
 

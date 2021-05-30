@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,9 @@ import ru.sfedu.HospitalityNetwork.models.OfferHost;
 import ru.sfedu.HospitalityNetwork.models.User;
 import ru.sfedu.HospitalityNetwork.repo.OfferGuestRepo;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -61,6 +64,43 @@ public class OfferGuestController {
         return "guests-offer";
     }
 
+    @PostMapping("/guests-offer/page{number}")
+    public String searchOfferGuest(
+            @RequestParam String country,
+            @RequestParam String city,
+            @PathVariable(value = "number") int number,
+            Model model) {
+        System.out.println(country + "  " + city);
+        Iterable<OfferGuest> offerGuests = offerGuestRepo.findAll();
+        ArrayList<OfferGuest> list = new ArrayList();
+        ArrayList<OfferGuest> listCountry = new ArrayList();
+        ArrayList<OfferGuest> listCountryAndCity = new ArrayList();
+        for (OfferGuest offerGuest : offerGuests) {
+            list.add(offerGuest);
+        }
+        if (country.trim().length() != 0) {
+            for (OfferGuest offerGuest : list) {
+                if (offerGuest.getCountry().equalsIgnoreCase(country)) {
+                    listCountry.add(offerGuest);
+                }
+            }
+            list = listCountry;
+        }
+        if (city.trim().length() != 0) {
+            for (OfferGuest OfferGuest : list) {
+                if (OfferGuest.getCity().equalsIgnoreCase(city)) {
+                    listCountryAndCity.add(OfferGuest);
+                }
+            }
+            list = listCountryAndCity;
+        }
+        if (city.trim().length() == 0 && country.trim().length() == 0) {
+            allOfferGuestMore(model, 1);
+        }
+        model.addAttribute("offerGuests", list);
+        return "guests-offer";
+    }
+
     @GetMapping("/guests-offer/{id}")
     public String offerGuestDetails(
             @AuthenticationPrincipal User user,
@@ -95,22 +135,23 @@ public class OfferGuestController {
 
     @PostMapping("/guests-offer/{id}/edit")
     public String offerGuestUpdate(
-            @RequestParam String name,
-            @RequestParam String aboutOffer,
-            @RequestParam String country,
-            @RequestParam String city,
-            @RequestParam String causeVisit,
-            @RequestParam String aboutBaggage,
+            @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,
+            @Valid OfferGuest offerGuest,
+            BindingResult bindingResult,
             Model model) {
-        OfferGuest offerGuest = offerGuestRepo.findById(id).orElseThrow();
-        offerGuest.setName(name);
-        offerGuest.setAboutOffer(aboutOffer);
-        offerGuest.setCountry(country);
-        offerGuest.setCity(city);
-        offerGuest.setCauseVisit(causeVisit);
-        offerGuest.setAboutBaggage(aboutBaggage);
-        offerGuestRepo.save(offerGuest);
+        offerGuest.setAuthor(user);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            System.out.println(errorsMap.size());
+            for (Map.Entry<String, String> item : errorsMap.entrySet()) {
+                System.out.println("Key = " + item.getKey() + "   Value = " + item.getValue());
+            }
+            model.mergeAttributes(errorsMap);
+            return offerGuestEdit(id, model);
+        } else {
+            offerGuestRepo.save(offerGuest);
+        }
         return "redirect:/guests-offer";
     }
 
